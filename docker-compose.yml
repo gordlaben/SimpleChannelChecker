@@ -1,0 +1,23 @@
+services:
+    simplechannelchecker:
+        container_name: simplechannelchecker
+        image: simplechannelchecker
+        ports:
+            - 1337:80
+        environment:
+            - PROVIDER_BASE_URL=http://api.providerurl.com/xxx/yyy # change this
+            - SCC_PLAYLIST_PORT=1337 # change this only if you know what you are doing
+            - WEB_HOSTNAME=127.0.0.1 # change this
+        command: [ "python", "/app/main.py" ]
+        volumes:
+            - ./scc:/app/playlist
+        restart: always
+
+    dozzle:
+        container_name: dozzle
+        image: amir20/dozzle:latest
+        volumes:
+            - //var/run/docker.sock:/var/run/docker.sock
+        ports:
+            - 8080:8080
+        restart: unless-stopped
