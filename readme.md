@@ -36,7 +36,7 @@ SCC is packaged as a Docker service and includes [Dozzle](https://github.com/ami
 services:
   simplechannelchecker:
     container_name: simplechannelchecker
-    image: simplechannelchecker
+    image: gordlaben/simplechannelchecker:latest
     ports:
       - "1337:80"
     environment:
