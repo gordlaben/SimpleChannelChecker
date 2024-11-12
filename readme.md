@@ -73,7 +73,7 @@ services:
 
 ## How SCC Works
 
-1. **Launch the application**: Run `docker-compose up --build` to start SCC.
+1. **Launch the application**: Run `docker-compose up -d` to start SCC.
 2. **Configure playlist.json**: SCC initializes a `playlist.json` file in the `scc` directory. This file lists channels and their associated stream IDs.
 3. **Monitor changes**: SCC continuously watches `playlist.json` for updates. If changes are detected, SCC regenerates the M3U playlist file (`playlist.m3u` or the name specified in `PLAYLIST_NAME`).
 4. **Access the playlist**: The generated playlist file is available at:
