@@ -8,7 +8,7 @@
 Use the provided `docker-compose.yml` file to get started quickly:
 
 ```bash
-docker-compose up --build
+docker compose up -d
 ```
 
 On startup, SCC creates a directory named `scc` and generates a sample `playlist.json` file for testing purposes.
