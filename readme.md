@@ -93,4 +93,4 @@ We welcome contributions to improve SCC! To contribute:
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](https://choosealicense.com/licenses/gpl-3.0/) file for details.
