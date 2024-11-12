@@ -1,0 +1,18 @@
+name: Python application
+
+on:
+  push:
+   branches: [ release ]
+      
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Build & Push Image
+      run: |
+        echo "${{ secrets.DOCKERPW }}" | docker login -u "gordlaben" --password-stdin
+        docker image build -t gordlaben/simplechannelchecker:latest .
+        docker push gordlaben/simplechannelchecker:latest
