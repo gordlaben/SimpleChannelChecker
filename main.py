@@ -4,12 +4,13 @@ import os
 import subprocess
 import time
 import threading
+from icecream import ic
 
 app = Flask(__name__)
 
 # Clean Provider Base URL, check for protocol correction and remove trailing slash if exists
 def clean_url(url):
-    print(url)
+    ic(url)
     # Check if the URL is None
     if url is None:
         raise ValueError("URL cannot be None")
@@ -44,19 +45,19 @@ playlist_path = playlist_folder + "/playlist.json"
 
 # Print out Final Playlist URL on startup
 if scc_playlist_port:
-    playlist_url = str(protocol + "://" + server_hostname + ":" + scc_playlist_port + "/proxy/" + m3u_filename)
-    print(playlist_url)
+    playlist_url = str(protocol + "://" + server_hostname + ":" + scc_playlist_port + m3u_filename)
+    ic(playlist_url)
 else:
-    playlist_url = str(protocol + "://" + server_hostname + "/proxy/" + m3u_filename)
-    print(playlist_url)
+    playlist_url = str(protocol + "://" + server_hostname + m3u_filename)
+    ic(playlist_url)
 
 
 # Check if the playlist folder exists, and create it if not
 if not os.path.exists(playlist_folder):
     os.makedirs(playlist_folder)
-    print(f"Directory '{playlist_folder}' created.")
+    ic(f"Directory '{playlist_folder}' created.")
 else:
-    print(f"Directory '{playlist_folder}' already exists.")
+    ic(f"Directory '{playlist_folder}' already exists.")
 
 # Function to check for existence of 'playlist.json', and create it with initial data if missing
 def check_or_create_playlist():
@@ -74,9 +75,9 @@ def check_or_create_playlist():
     if not os.path.isfile(file_path):
         with open(file_path, "w") as file:
             json.dump(initial_data, file, indent=2)
-        print("playlist.json file created with initial data.")
+        ic("playlist.json file created with initial data.")
     else:
-        print("playlist.json already exists.")
+        ic("playlist.json already exists.")
 
 
 # Function to generate the M3U playlist file based on the URL map
@@ -84,7 +85,7 @@ def generate_playlist(url_map):
     # Delete the existing M3U file if it exists
     if os.path.exists(m3u_filename):
         os.remove(m3u_filename)
-        print(f"{m3u_filename} already exists. Deleting it.")
+        ic(f"{m3u_filename} already exists. Deleting it.")
 
     # Write to the new M3U file
     with open(m3u_filename, "w") as m3u_file:
@@ -104,7 +105,7 @@ def generate_playlist(url_map):
             m3u_file.write(f"#EXTINF:{duration},{title}\n")
             m3u_file.write(playlist_url + "\n")  # Write the actual URL
 
-    print("Playlist Generated.")
+    ic("Playlist Generated.")
 
 
 # Function to watch for changes in 'playlist.json' and regenerate the M3U file if updated
@@ -115,7 +116,7 @@ def check_for_changes():
             # Check the modification time of 'playlist.json'
             current_modified_time = os.path.getmtime(playlist_path)
             if current_modified_time != last_modified_time:
-                print("Detected change in playlist.json. Regenerating playlist.")
+                ic("Detected change in playlist.json. Regenerating playlist.")
                 last_modified_time = current_modified_time
 
                 # Reload the updated URL map and regenerate the M3U playlist
@@ -125,7 +126,7 @@ def check_for_changes():
 
             time.sleep(5)  # Check for changes every 5 seconds
         except KeyboardInterrupt:
-            print("Stopping file watcher.")
+            ic("Stopping file watcher.")
             break
 
 # Function to check if a stream is active using FFmpeg to read data from it
@@ -140,20 +141,20 @@ def is_stream_active_ffmpeg(url):
 
         # Check for specific error messages in FFmpeg output indicating inactivity
         if "Input/output error" in result.stderr.decode():
-            print("Stream is inactive.")
+            ic("Stream is inactive.")
             return False
         else:
-            print("Stream is active.")
+            ic("Stream is active.")
             return True
     except subprocess.TimeoutExpired:
-        print("FFmpeg timed out. Stream might be inactive or unreachable.")
+        ic("FFmpeg timed out. Stream might be inactive or unreachable.")
         return False
 
 # Function to find and return an active stream URL for a given path name
 def loop_through(url_map, path_name):
     # Check if path_name exists in url_map
     if path_name not in url_map:
-        print(f"Error: '{path_name}' not found in playlist.json")
+        ic(f"Error: '{path_name}' not found in playlist.json")
         return None  # or handle as you see fit, e.g., return a custom error value
 
     for channel_id in url_map[path_name]:  # Loop through the list of URLs for the path
@@ -167,20 +168,20 @@ def loop_through(url_map, path_name):
 
 
 # Initialize the playlist file and load URL mappings
-print("Step #1 - Check or Create playlist.json")
+ic("Step #1 - Check or Create playlist.json")
 check_or_create_playlist()
 
-print("Step #2 - Create url_map out of playlist.json file")
+ic("Step #2 - Create url_map out of playlist.json file")
 last_modified_time = os.path.getmtime(playlist_path)
 with open(playlist_path, 'r') as file:
     url_map = json.load(file)
 
-print("Step #3 - Generate playlist.m3u")
+ic("Step #3 - Generate playlist.m3u")
 generate_playlist(url_map)
 
 
 # Flask route to serve the M3U playlist file
-@app.route('/playlist.m3u')
+@app.route('/' + m3u_filename)
 def serve_playlist():
     return send_file('playlist.m3u', mimetype="audio/x-mpegurl")
 
