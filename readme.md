@@ -28,6 +28,14 @@ Example `playlist.json`:
 - **`OMG1337`**: Represent the PRIMARY unique **ID** for the channel or station within the provider's API.
 - **`OMG1338`**: Represent the FALLBACK unique **ID** for the channel or station within the provider's API.
 
+### m3u to json converter
+
+I’ve created a converter function to streamline your workflow. In your main directory, you’ll find a folder named playlist/converter. Simply drop your .m3u or .m3u8 playlist files into this folder, and within a few seconds, they will be converted into .json format.
+Please note that the converter does not merge channels; it performs a direct format conversion only. You’ll still need to handle any main and backup channel configurations manually.
+
+And as already mentioned, from that json file, remove your PROVIDER URL which is added as a ENV variable.
+
+
 ## Docker Compose Configuration
 
 SCC is packaged as a Docker service and includes [Dozzle](https://github.com/amir20/dozzle) for real-time log viewing. Here’s an overview of the services:
@@ -60,16 +68,17 @@ services:
 
 ## Environment Variables
 
-| Variable           | Default        | Description |
-|--------------------|----------------|-------------|
+| Variable            | Default        | Description                                                                                                                                |
+|---------------------|----------------|--------------------------------------------------------------------------------------------------------------------------------------------|
 | `PROVIDER_BASE_URL` | **Required**   | The base URL of the stream provider’s API (e.g., `http://api.providerurl.com/xxxxx/yyyyy`). Do **not** include the channel ID in this URL. |
-| `WEB_PROTOCOL`     | `http`         | Protocol for accessing the streams (`http` or `https`). |
-| `WEB_HOSTNAME`     | `127.0.0.1`    | The public IP address or domain name for accessing SCC. |
-| `SCC_PORT`         | `80`           | The port on which the Flask app runs. Ensure this matches the Docker Compose configuration. |
-| `SCC_PLAYLIST_PORT`| **Required**   | The port used for playlist proxying. |
-| `FLASK_HOST`       | `0.0.0.0`      | Host address for the Flask app. Change if needed. |
-| `FLASK_DEBUG`      | `true`         | Enables debug mode for detailed logs. |
-| `PLAYLIST_NAME`    | `playlist.m3u` | The name of the generated playlist file. Change if necessary but retain the `.m3u` extension. |
+| `WEB_PROTOCOL`      | `http`         | Protocol for accessing the streams (`http` or `https`).                                                                                    |
+| `WEB_HOSTNAME`      | `127.0.0.1`    | The public IP address or domain name for accessing SCC.                                                                                    |
+| `SCC_PORT`          | `80`           | The port on which the Flask app runs. Ensure this matches the Docker Compose configuration.                                                |
+| `SCC_PLAYLIST_PORT` | **Required**   | The port used for playlist proxying.                                                                                                       |
+| `FLASK_HOST`        | `0.0.0.0`      | Host address for the Flask app. Change if needed.                                                                                          |
+| `FLASK_DEBUG`       | `true`         | Enables debug mode for detailed logs.                                                                                                      |
+| `PLAYLIST_NAME`     | `playlist.m3u` | The name of the generated playlist file. Change if necessary but retain the `.m3u` extension.                                              |
+| `CHANNEL_TAG`       | `tvg-name`     | The name of the channel TAG inside your m3u playlist.                                                                                      |
 
 ## How SCC Works
 
