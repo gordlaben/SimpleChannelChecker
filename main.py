@@ -41,7 +41,6 @@ m3u_filename = os.getenv("PLAYLIST_NAME", "playlist.m3u")
 playlist_folder = "./playlist"
 playlist_path = playlist_folder + "/playlist.json"
 
-print("Stream URL printout: " + provider_base_url + "/123123123")
 
 # Check if the playlist folder exists, and create it if not
 if not os.path.exists(playlist_folder):
@@ -143,14 +142,17 @@ def is_stream_active_ffmpeg(url):
 
 # Function to find and return an active stream URL for a given path name
 def loop_through(url_map, path_name):
-    for channel_id in url_map[path_name]:  # Loop through the list of URLs for the path
-        stream_url = provider_base_url + "/" + channel_id
-        # Uncomment 'is_stream_alive' to check if the stream is reachable
-        # if is_stream_alive(value):
-        if is_stream_active_ffmpeg(stream_url):  # Check if the stream is active
-            return channel_id
-    return None  # Return None if no active stream is found
-
+    if path_name:
+        for channel_id in url_map[path_name]:  # Loop through the list of URLs for the path
+            stream_url = provider_base_url + "/" + channel_id
+            # Uncomment 'is_stream_alive' to check if the stream is reachable
+            # if is_stream_alive(value):
+            if is_stream_active_ffmpeg(stream_url):  # Check if the stream is active
+                return channel_id
+        return None  # Return None if no active stream is found
+    else:
+        print(path_name + " not found.")
+        return None
 
 # Initialize the playlist file and load URL mappings
 print("Step #1 - Check or Create playlist.json")

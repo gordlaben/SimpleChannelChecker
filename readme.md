@@ -8,7 +8,7 @@
 Use the provided `docker-compose.yml` file to get started quickly:
 
 ```bash
-docker-compose up --build
+docker compose up -d
 ```
 
 On startup, SCC creates a directory named `scc` and generates a sample `playlist.json` file for testing purposes.
@@ -36,7 +36,7 @@ SCC is packaged as a Docker service and includes [Dozzle](https://github.com/ami
 services:
   simplechannelchecker:
     container_name: simplechannelchecker
-    image: simplechannelchecker
+    image: gordlaben/simplechannelchecker:latest
     ports:
       - "1337:80"
     environment:
@@ -73,7 +73,7 @@ services:
 
 ## How SCC Works
 
-1. **Launch the application**: Run `docker-compose up --build` to start SCC.
+1. **Launch the application**: Run `docker-compose up -d` to start SCC.
 2. **Configure playlist.json**: SCC initializes a `playlist.json` file in the `scc` directory. This file lists channels and their associated stream IDs.
 3. **Monitor changes**: SCC continuously watches `playlist.json` for updates. If changes are detected, SCC regenerates the M3U playlist file (`playlist.m3u` or the name specified in `PLAYLIST_NAME`).
 4. **Access the playlist**: The generated playlist file is available at:
@@ -93,4 +93,4 @@ We welcome contributions to improve SCC! To contribute:
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](https://choosealicense.com/licenses/gpl-3.0/) file for details.

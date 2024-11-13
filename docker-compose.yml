@@ -1,7 +1,7 @@
 services:
     simplechannelchecker:
         container_name: simplechannelchecker
-        image: simplechannelchecker
+        image: gordlaben/simplechannelchecker:latest
         ports:
             - 1337:80
         environment:
