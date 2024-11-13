@@ -19,16 +19,16 @@ Example `playlist.json`:
 
 ```json
 {
-    "tester": [
-        "OMG1337",
-        "OMG1338"
+    "us-channel-name": [
+        "channel-id-1",
+        "channel-id-2"
     ]
 }
 ```
 
-- **`tester`**: Represents the channel or station **name**.
-- **`OMG1337`**: Represent the PRIMARY unique **ID** for the channel or station within the provider's API.
-- **`OMG1338`**: Represent the FALLBACK unique **ID** for the channel or station within the provider's API.
+- **`us-channel-name`**: Represents the channel or station **name**.
+- **`channel-id-1`**: Represent the PRIMARY unique **ID** for the channel or station within the provider's API.
+- **`channel-id-2`**: Represent the FALLBACK unique **ID** for the channel or station within the provider's API.
 
 <br />
 
