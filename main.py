@@ -8,6 +8,7 @@ from icecream import ic
 
 app = Flask(__name__)
 
+
 # Clean Provider Base URL, check for protocol correction and remove trailing slash if exists
 def clean_url(url):
     ic(url)
@@ -33,7 +34,7 @@ server_hostname = os.getenv("WEB_HOSTNAME", "127.0.0.1")
 scc_port = os.getenv("SCC_PORT", "80")
 scc_playlist_port = os.getenv("SCC_PLAYLIST_PORT")
 flask_host = os.getenv("FLASK_HOST", "0.0.0.0")
-flask_debug = os.getenv("FLASK_DEBUG", "True")
+flask_debug = os.getenv("FLASK_DEBUG", True)
 
 # Define M3U playlist file name (default: "playlist.m3u")
 m3u_filename = os.getenv("PLAYLIST_NAME", "playlist.m3u")
@@ -41,7 +42,6 @@ m3u_filename = os.getenv("PLAYLIST_NAME", "playlist.m3u")
 # Define the path for the playlist folder and playlist file
 playlist_folder = "./playlist"
 playlist_path = playlist_folder + "/playlist.json"
-
 
 # Print out Final Playlist URL on startup
 if scc_playlist_port:
@@ -51,13 +51,13 @@ else:
     playlist_url = str(protocol + "://" + server_hostname + "/" + m3u_filename)
     ic(playlist_url)
 
-
 # Check if the playlist folder exists, and create it if not
 if not os.path.exists(playlist_folder):
     os.makedirs(playlist_folder)
-    ic(f"Directory '{playlist_folder}' created.")
+    ic("Directory " + playlist_folder + " created.")
 else:
-    ic(f"Directory '{playlist_folder}' already exists.")
+    ic("Directory " + playlist_folder + " already exists.")
+
 
 # Function to check for existence of 'playlist.json', and create it with initial data if missing
 def check_or_create_playlist():
@@ -120,14 +120,15 @@ def check_for_changes():
                 last_modified_time = current_modified_time
 
                 # Reload the updated URL map and regenerate the M3U playlist
-                with open(playlist_path, 'r') as file:
-                    url_map = json.load(file)
+                with open(playlist_path, 'r') as playlist_file:
+                    url_map = json.load(playlist_file)
                 generate_playlist(url_map)
 
             time.sleep(5)  # Check for changes every 5 seconds
         except KeyboardInterrupt:
             ic("-- Stopping file watcher.")
             break
+
 
 # Function to check if a stream is active using FFmpeg to read data from it
 def is_stream_active_ffmpeg(url):
@@ -149,6 +150,7 @@ def is_stream_active_ffmpeg(url):
     except subprocess.TimeoutExpired:
         ic("-- FFmpeg timed out. Stream might be inactive or unreachable.")
         return False
+
 
 # Function to find and return an active stream URL for a given path name
 def loop_through(url_map, path_name):
@@ -197,7 +199,8 @@ def proxy(path_name):
     else:
         abort(404, description="URL not found")  # Return 404 if no URL is found
 
+
 # Entry point for the script to start the file-watcher thread and run the Flask app
 if __name__ == '__main__':
     threading.Thread(target=check_for_changes, daemon=True).start()  # Start file-watcher thread
-    app.run(host=flask_host, port=scc_port, debug=flask_debug)  # Run Flask app with specified host and port
+    app.run(host=flask_host, port=int(scc_port), debug=flask_debug)  # Run Flask app with specified host and port
