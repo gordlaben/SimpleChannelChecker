@@ -3,6 +3,7 @@
 
 **Simple Channel Checker (SCC)** is a tool designed to streamline online streaming experiences by managing multiple stream sources for a single channel. SCC can designate a primary stream, with additional streams as fallbacks in case of failure, ensuring seamless playback for live or online channels.
 
+---
 ## Quick Start with Docker
 
 Use the provided `docker-compose.yml` file to get started quickly:
@@ -28,14 +29,15 @@ Example `playlist.json`:
 - **`OMG1337`**: Represent the PRIMARY unique **ID** for the channel or station within the provider's API.
 - **`OMG1338`**: Represent the FALLBACK unique **ID** for the channel or station within the provider's API.
 
-### m3u to json converter
+---
+## m3u to JSON Converter
 
 I’ve created a converter function to streamline your workflow. In your main directory, you’ll find a folder named playlist/converter. Simply drop your .m3u or .m3u8 playlist files into this folder, and within a few seconds, they will be converted into .json format.
 Please note that the converter does not merge channels; it performs a direct format conversion only. You’ll still need to handle any main and backup channel configurations manually.
 
 And as already mentioned, from that json file, remove your PROVIDER URL which is added as a ENV variable.
 
-
+---
 ## Docker Compose Configuration
 
 SCC is packaged as a Docker service and includes [Dozzle](https://github.com/amir20/dozzle) for real-time log viewing. Here’s an overview of the services:
@@ -66,6 +68,7 @@ services:
     restart: unless-stopped
 ```
 
+---
 ## Environment Variables
 
 | Variable            | Default        | Description                                                                                                                                |
@@ -80,6 +83,7 @@ services:
 | `PLAYLIST_NAME`     | `playlist.m3u` | The name of the generated playlist file. Change if necessary but retain the `.m3u` extension.                                              |
 | `CHANNEL_TAG`       | `tvg-name`     | The name of the channel TAG inside your m3u playlist.                                                                                      |
 
+---
 ## How SCC Works
 
 1. **Launch the application**: Run `docker-compose up -d` to start SCC.
@@ -91,6 +95,7 @@ services:
    ```
    For example, `http://127.0.0.1/playlist.m3u`.
 
+---
 ## Contributing
 
 We welcome contributions to improve SCC! To contribute:
@@ -100,6 +105,7 @@ We welcome contributions to improve SCC! To contribute:
 3. Commit your changes.
 4. Open a pull request for review.
 
+---
 ## License
 
 This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](https://choosealicense.com/licenses/gpl-3.0/) file for details.
