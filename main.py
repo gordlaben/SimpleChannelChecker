@@ -75,9 +75,9 @@ def check_or_create_playlist():
     if not os.path.isfile(file_path):
         with open(file_path, "w") as file:
             json.dump(initial_data, file, indent=2)
-        ic("playlist.json file created with initial data.")
+        ic("-- playlist.json file created with initial data.")
     else:
-        ic("playlist.json already exists.")
+        ic("-- playlist.json already exists.")
 
 
 # Function to generate the M3U playlist file based on the URL map
@@ -85,7 +85,7 @@ def generate_playlist(url_map):
     # Delete the existing M3U file if it exists
     if os.path.exists(m3u_filename):
         os.remove(m3u_filename)
-        ic(f"{m3u_filename} already exists. Deleting it.")
+        ic("-- " + m3u_filename + " already exists. Deleting it.")
 
     # Write to the new M3U file
     with open(m3u_filename, "w") as m3u_file:
@@ -105,7 +105,7 @@ def generate_playlist(url_map):
             m3u_file.write(f"#EXTINF:{duration},{title}\n")
             m3u_file.write(playlist_url + "\n")  # Write the actual URL
 
-    ic("Playlist Generated.")
+    ic("-- Playlist Generated.")
 
 
 # Function to watch for changes in 'playlist.json' and regenerate the M3U file if updated
@@ -116,7 +116,7 @@ def check_for_changes():
             # Check the modification time of 'playlist.json'
             current_modified_time = os.path.getmtime(playlist_path)
             if current_modified_time != last_modified_time:
-                ic("Detected change in playlist.json. Regenerating playlist.")
+                ic("-- Detected change in playlist.json. Regenerating playlist.")
                 last_modified_time = current_modified_time
 
                 # Reload the updated URL map and regenerate the M3U playlist
@@ -126,7 +126,7 @@ def check_for_changes():
 
             time.sleep(5)  # Check for changes every 5 seconds
         except KeyboardInterrupt:
-            ic("Stopping file watcher.")
+            ic("-- Stopping file watcher.")
             break
 
 # Function to check if a stream is active using FFmpeg to read data from it
@@ -141,20 +141,20 @@ def is_stream_active_ffmpeg(url):
 
         # Check for specific error messages in FFmpeg output indicating inactivity
         if "Input/output error" in result.stderr.decode():
-            ic("Stream is inactive.")
+            ic("-- Stream is inactive.")
             return False
         else:
-            ic("Stream is active.")
+            ic("-- Stream is active.")
             return True
     except subprocess.TimeoutExpired:
-        ic("FFmpeg timed out. Stream might be inactive or unreachable.")
+        ic("-- FFmpeg timed out. Stream might be inactive or unreachable.")
         return False
 
 # Function to find and return an active stream URL for a given path name
 def loop_through(url_map, path_name):
     # Check if path_name exists in url_map
     if path_name not in url_map:
-        ic(f"Error: '{path_name}' not found in playlist.json")
+        ic("-- Error: " + path_name + " not found in playlist.json")
         return None  # or handle as you see fit, e.g., return a custom error value
 
     for channel_id in url_map[path_name]:  # Loop through the list of URLs for the path
@@ -168,15 +168,16 @@ def loop_through(url_map, path_name):
 
 
 # Initialize the playlist file and load URL mappings
-ic("Step #1 - Check or Create playlist.json")
+ic("Check or Create playlist.json")
 check_or_create_playlist()
 
-ic("Step #2 - Create url_map out of playlist.json file")
+ic("Create url_map out of playlist.json file")
 last_modified_time = os.path.getmtime(playlist_path)
 with open(playlist_path, 'r') as file:
     url_map = json.load(file)
+    ic("-- URL_MAP created.")
 
-ic("Step #3 - Generate playlist.m3u")
+ic("Generate playlist.m3u")
 generate_playlist(url_map)
 
 
