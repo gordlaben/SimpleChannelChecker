@@ -142,17 +142,20 @@ def is_stream_active_ffmpeg(url):
 
 # Function to find and return an active stream URL for a given path name
 def loop_through(url_map, path_name):
-    if path_name:
-        for channel_id in url_map[path_name]:  # Loop through the list of URLs for the path
-            stream_url = provider_base_url + "/" + channel_id
-            # Uncomment 'is_stream_alive' to check if the stream is reachable
-            # if is_stream_alive(value):
-            if is_stream_active_ffmpeg(stream_url):  # Check if the stream is active
-                return channel_id
-        return None  # Return None if no active stream is found
-    else:
-        print(path_name + " not found.")
-        return None
+    # Check if path_name exists in url_map
+    if path_name not in url_map:
+        print(f"Error: '{path_name}' not found in playlist.json")
+        return None  # or handle as you see fit, e.g., return a custom error value
+
+    for channel_id in url_map[path_name]:  # Loop through the list of URLs for the path
+        stream_url = provider_base_url + "/" + channel_id
+        # Uncomment 'is_stream_alive' to check if the stream is reachable
+        # if is_stream_alive(value):
+        if is_stream_active_ffmpeg(stream_url):  # Check if the stream is active
+            return channel_id
+
+    return None  # Return None if no active stream is found
+
 
 # Initialize the playlist file and load URL mappings
 print("Step #1 - Check or Create playlist.json")
