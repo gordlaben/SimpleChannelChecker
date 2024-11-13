@@ -136,7 +136,7 @@ def is_stream_active_ffmpeg(url):
         result = subprocess.run(
             ["ffmpeg", "-i", url, "-t", "5", "-f", "null", "-"],
             stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-            timeout=15
+            timeout=10
         )
 
         # Check for specific error messages in FFmpeg output indicating inactivity
@@ -184,7 +184,7 @@ generate_playlist(url_map)
 # Flask route to serve the M3U playlist file
 @app.route('/' + m3u_filename)
 def serve_playlist():
-    return send_file('playlist.m3u', mimetype="audio/x-mpegurl")
+    return send_file(m3u_filename, mimetype="audio/x-mpegurl")
 
 
 # Flask route to proxy requests for a specific stream path
