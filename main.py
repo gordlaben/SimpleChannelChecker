@@ -180,7 +180,7 @@ generate_playlist(url_map)
 
 
 # Flask route to serve the M3U playlist file
-@app.route('/playlist.m3u')
+@app.route('/' + m3u_filename)
 def serve_playlist():
     return send_file('playlist.m3u', mimetype="audio/x-mpegurl")
 
