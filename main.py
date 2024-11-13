@@ -5,6 +5,7 @@ import subprocess
 import time
 import threading
 from icecream import ic
+import converter
 
 app = Flask(__name__)
 
@@ -203,4 +204,5 @@ def proxy(path_name):
 # Entry point for the script to start the file-watcher thread and run the Flask app
 if __name__ == '__main__':
     threading.Thread(target=check_for_changes, daemon=True).start()  # Start file-watcher thread
+    threading.Thread(target=converter.check_and_convert_files(), daemon=True).start()  # Start file-watcher thread
     app.run(host=flask_host, port=int(scc_port), debug=flask_debug)  # Run Flask app with specified host and port
