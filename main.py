@@ -141,10 +141,10 @@ def is_stream_active_ffmpeg(url):
 
         # Check for specific error messages in FFmpeg output indicating inactivity
         if "Input/output error" in result.stderr.decode():
-            ic("-- Stream is inactive.")
+            ic("-- " + url + " is inactive.")
             return False
         else:
-            ic("-- Stream is active.")
+            ic("-- " + url + " is active.")
             return True
     except subprocess.TimeoutExpired:
         ic("-- FFmpeg timed out. Stream might be inactive or unreachable.")
