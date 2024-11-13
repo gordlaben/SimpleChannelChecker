@@ -42,6 +42,15 @@ playlist_folder = "./playlist"
 playlist_path = playlist_folder + "/playlist.json"
 
 
+# Print out Final Playlist URL on startup
+if scc_playlist_port:
+    playlist_url = str(protocol + "://" + server_hostname + ":" + scc_playlist_port + "/proxy/" + m3u_filename)
+    print(playlist_url)
+else:
+    playlist_url = str(protocol + "://" + server_hostname + "/proxy/" + m3u_filename)
+    print(playlist_url)
+
+
 # Check if the playlist folder exists, and create it if not
 if not os.path.exists(playlist_folder):
     os.makedirs(playlist_folder)
