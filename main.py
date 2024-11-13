@@ -45,10 +45,10 @@ playlist_path = playlist_folder + "/playlist.json"
 
 # Print out Final Playlist URL on startup
 if scc_playlist_port:
-    playlist_url = str(protocol + "://" + server_hostname + ":" + scc_playlist_port + m3u_filename)
+    playlist_url = str(protocol + "://" + server_hostname + ":" + scc_playlist_port + "/" + m3u_filename)
     ic(playlist_url)
 else:
-    playlist_url = str(protocol + "://" + server_hostname + m3u_filename)
+    playlist_url = str(protocol + "://" + server_hostname + "/" + m3u_filename)
     ic(playlist_url)
 
 
