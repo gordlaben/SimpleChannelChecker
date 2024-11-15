@@ -16,8 +16,12 @@ services:
     dozzle:
         container_name: dozzle
         image: amir20/dozzle:latest
+        #environment: # Visit to see how to add users.yml file to /dozzle/data folder https://dozzle.dev/guide/authentication#file-based-user-management
+            #- DOZZLE_AUTH_PROVIDER=simple
+            #- DOZZLE_AUTH_TTL=48h
         volumes:
-            - //var/run/docker.sock:/var/run/docker.sock
+            - /var/run/docker.sock:/var/run/docker.sock
+            - ./dozzle/data:/data
         ports:
-            - 8080:8080
+            - 3333:8080
         restart: unless-stopped
