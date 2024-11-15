@@ -53,8 +53,8 @@ services:
         ports:
             - 1337:80
         environment:
-            - SCC_PLAYLIST_PORT=1337 # change this only if you know what you are doing
-            - WEB_HOSTNAME=127.0.0.1 # change this
+            - SCC_PLAYLIST_PORT=1337 # change this - The port used for playlist proxying.
+            - WEB_HOSTNAME=127.0.0.1 # change this - The public IP address or domain name for accessing SCC.
         command: [ "python", "/app/main.py" ]
         volumes:
             - ./scc:/app/playlist
