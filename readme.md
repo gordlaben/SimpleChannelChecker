@@ -20,9 +20,9 @@ Example `playlist.json`:
 ```json
 {
     "us-channel-name": [
-        "channel-id-1",
-        "channel-id-2"
-    ]
+         "channel-id-or-url-1",
+         "channel-id-or-url-2"
+     ]
 }
 ```
 

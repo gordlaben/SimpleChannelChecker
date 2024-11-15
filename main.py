@@ -68,8 +68,8 @@ def check_or_create_playlist():
     # Initial data for the playlist if the file doesn't exist
     initial_data = {
         "us-channel-name": [
-            "channel-id-1",
-            "channel-id-2"
+            "channel-id-or-url-1",
+            "channel-id-or-url-2"
         ]
     }
 
