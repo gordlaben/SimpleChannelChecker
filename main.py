@@ -161,15 +161,15 @@ def loop_through(url_map, path_name):
         ic("-- Error: " + path_name + " not found in playlist.json")
         return None  # or handle as you see fit, e.g., return a custom error value
 
-    for channel_id in url_map[path_name]:  # Loop through the list of URLs for the path
+    for channel_url_id in url_map[path_name]:  # Loop through the list of URLs for the path
         if provider_base_url:
-            stream_url = provider_base_url + "/" + channel_id
+            stream_url = provider_base_url + "/" + channel_url_id
         else:
-            stream_url = channel_id
+            stream_url = channel_url_id
         # Uncomment 'is_stream_alive' to check if the stream is reachable
         # if is_stream_alive(value):
         if is_stream_active_ffmpeg(stream_url):  # Check if the stream is active
-            return channel_id
+            return stream_url
 
     return None  # Return None if no active stream is found
 
@@ -197,10 +197,9 @@ def serve_playlist():
 # Flask route to proxy requests for a specific stream path
 @app.route('/proxy/<path_name>')
 def proxy(path_name):
-    channel_id = loop_through(url_map, path_name)  # Find an active stream URL
-    if channel_id is not None:
-        stream_final_url = provider_base_url + "/" + channel_id
-        return redirect(stream_final_url, code=302)  # Redirect to the active stream
+    channel_url_id = loop_through(url_map, path_name)  # Find an active stream URL
+    if channel_url_id is not None:
+        return redirect(channel_url_id, code=302)  # Redirect to the active stream
     else:
         abort(404, description="URL not found")  # Return 404 if no URL is found
 
