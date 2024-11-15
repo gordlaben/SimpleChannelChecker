@@ -5,7 +5,6 @@ services:
         ports:
             - 1337:80
         environment:
-            - PROVIDER_BASE_URL=http://api.providerurl.com/xxx/yyy # change this
             - SCC_PLAYLIST_PORT=1337 # change this only if you know what you are doing
             - WEB_HOSTNAME=127.0.0.1 # change this
         command: [ "python", "/app/main.py" ]

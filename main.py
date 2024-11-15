@@ -28,8 +28,9 @@ def clean_url(url):
 
 
 # Retrieve environment variables for configurations, with default values if not set
-provider_base_url = os.getenv("PROVIDER_BASE_URL")
-provider_base_url = clean_url(provider_base_url)
+provider_base_url = os.getenv("PROVIDER_BASE_URL", None)
+if provider_base_url:
+    provider_base_url = clean_url(provider_base_url)
 protocol = os.getenv("WEB_PROTOCOL", "http")
 server_hostname = os.getenv("WEB_HOSTNAME", "127.0.0.1")
 scc_port = os.getenv("SCC_PORT", "80")
@@ -161,7 +162,10 @@ def loop_through(url_map, path_name):
         return None  # or handle as you see fit, e.g., return a custom error value
 
     for channel_id in url_map[path_name]:  # Loop through the list of URLs for the path
-        stream_url = provider_base_url + "/" + channel_id
+        if provider_base_url:
+            stream_url = provider_base_url + "/" + channel_id
+        else:
+            stream_url = channel_id
         # Uncomment 'is_stream_alive' to check if the stream is reachable
         # if is_stream_alive(value):
         if is_stream_active_ffmpeg(stream_url):  # Check if the stream is active

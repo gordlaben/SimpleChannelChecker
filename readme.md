@@ -27,8 +27,8 @@ Example `playlist.json`:
 ```
 
 - **`us-channel-name`**: Represents the channel or station **name**.
-- **`channel-id-1`**: Represent the PRIMARY unique **ID** for the channel or station within the provider's API.
-- **`channel-id-2`**: Represent the FALLBACK unique **ID** for the channel or station within the provider's API.
+- **`channel-id-1`**: Represents the PRIMARY unique **ID** for the channel or station within the provider's API.
+- **`channel-id-2`**: Represents the FALLBACK unique **ID** for the channel or station within the provider's API.
 
 <br />
 
@@ -53,7 +53,6 @@ services:
         ports:
             - 1337:80
         environment:
-            - PROVIDER_BASE_URL=http://api.providerurl.com/xxx/yyy # change this
             - SCC_PLAYLIST_PORT=1337 # change this only if you know what you are doing
             - WEB_HOSTNAME=127.0.0.1 # change this
         command: [ "python", "/app/main.py" ]
@@ -79,17 +78,17 @@ services:
 
 ## Environment Variables
 
-| Variable            | Default        | Description                                                                                                                                |
-|---------------------|----------------|--------------------------------------------------------------------------------------------------------------------------------------------|
-| `PROVIDER_BASE_URL` | **Required**   | The base URL of the stream provider’s API (e.g., `http://api.providerurl.com/xxxxx/yyyyy`). Do **not** include the channel ID in this URL. |
-| `WEB_PROTOCOL`      | `http`         | Protocol for accessing the streams (`http` or `https`).                                                                                    |
-| `WEB_HOSTNAME`      | `127.0.0.1`    | The public IP address or domain name for accessing SCC.                                                                                    |
-| `SCC_PORT`          | `80`           | The port on which the Flask app runs. Ensure this matches the Docker Compose configuration.                                                |
-| `SCC_PLAYLIST_PORT` | **Required**   | The port used for playlist proxying.                                                                                                       |
-| `FLASK_HOST`        | `0.0.0.0`      | Host address for the Flask app. Change if needed.                                                                                          |
-| `FLASK_DEBUG`       | `true`         | Enables debug mode for detailed logs.                                                                                                      |
-| `PLAYLIST_NAME`     | `playlist.m3u` | The name of the generated playlist file. Change if necessary but retain the `.m3u` extension.                                              |
-| `CHANNEL_TAG`       | `tvg-name`     | The name of the channel TAG inside your m3u playlist.                                                                                      |
+| Variable            | Default        | Description                                                                                                                                                                                     |
+|---------------------|----------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `PROVIDER_BASE_URL` | `None`         | The base URL of the stream provider’s API (e.g., `http://api.providerurl.com/xxxxx/yyyyy`). If NONE, it will take full URLs from the .json file. Do **not** include the channel ID in this URL. |
+| `WEB_PROTOCOL`      | `http`         | Protocol for accessing the streams (`http` or `https`).                                                                                                                                         |
+| `WEB_HOSTNAME`      | `127.0.0.1`    | The public IP address or domain name for accessing SCC.                                                                                                                                         |
+| `SCC_PORT`          | `80`           | The port on which the Flask app runs. Ensure this matches the Docker Compose configuration.                                                                                                     |
+| `SCC_PLAYLIST_PORT` | **Required**   | The port used for playlist proxying.                                                                                                                                                            |
+| `FLASK_HOST`        | `0.0.0.0`      | Host address for the Flask app. Change if needed.                                                                                                                                               |
+| `FLASK_DEBUG`       | `true`         | Enables debug mode for detailed logs.                                                                                                                                                           |
+| `PLAYLIST_NAME`     | `playlist.m3u` | The name of the generated playlist file. Change if necessary but retain the `.m3u` extension.                                                                                                   |
+| `CHANNEL_TAG`       | `tvg-name`     | The name of the channel TAG inside your m3u playlist.                                                                                                                                           |
 
 <br />
 
