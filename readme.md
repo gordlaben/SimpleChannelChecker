@@ -47,28 +47,32 @@ SCC is packaged as a Docker service and includes [Dozzle](https://github.com/ami
 
 ```yaml
 services:
-  simplechannelchecker:
-    container_name: simplechannelchecker
-    image: gordlaben/simplechannelchecker:latest
-    ports:
-      - "1337:80"
-    environment:
-      - PROVIDER_BASE_URL=http://api.providerurl.com/xxx/yyy  # Update with your provider’s API base URL
-      - SCC_PLAYLIST_PORT=1337  # Update if necessary
-      - WEB_HOSTNAME=127.0.0.1  # Public IP or domain
-    command: ["python", "/app/main.py"]
-    volumes:
-      - ./scc:/app/playlist
-    restart: always
+    simplechannelchecker:
+        container_name: simplechannelchecker
+        image: gordlaben/simplechannelchecker:latest
+        ports:
+            - 1337:80
+        environment:
+            - PROVIDER_BASE_URL=http://api.providerurl.com/xxx/yyy # change this
+            - SCC_PLAYLIST_PORT=1337 # change this only if you know what you are doing
+            - WEB_HOSTNAME=127.0.0.1 # change this
+        command: [ "python", "/app/main.py" ]
+        volumes:
+            - ./scc:/app/playlist
+        restart: always
 
-  dozzle:
-    container_name: dozzle
-    image: amir20/dozzle:latest
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    ports:
-      - "8080:8080"
-    restart: unless-stopped
+    dozzle:
+        container_name: dozzle
+        image: amir20/dozzle:latest
+        #environment: # Visit to see how to add users.yml file to /dozzle/data folder https://dozzle.dev/guide/authentication#file-based-user-management
+            #- DOZZLE_AUTH_PROVIDER=simple
+            #- DOZZLE_AUTH_TTL=48h
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+            - ./dozzle/data:/data
+        ports:
+            - 3333:8080
+        restart: unless-stopped
 ```
 
 <br />
